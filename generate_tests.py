@@ -174,6 +174,7 @@ for batch in BATCHES:
     for number in range(batch.get('TESTS')):
         path = os.path.join(DIR, batch.get('NAME'))
         try:
+            os.mkdir(DIR)
             os.mkdir(path)
         except FileExistsError:
             pass
