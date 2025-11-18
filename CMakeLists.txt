@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 4.0)
 project(polynomials C)
 
-set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD 23)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+
 add_compile_options(
-    -std=c23
     -pedantic
     -Wall
     -Wextra
@@ -24,4 +25,5 @@ add_compile_options(
     -fno-omit-frame-pointer
     -O1
 )
+
 add_executable(polynomials main.c)
