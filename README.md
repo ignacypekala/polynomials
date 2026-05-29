@@ -43,7 +43,7 @@ Or without valgrind:
 ### Usage Example
 
 The calculator starts with an accumulator value of `0`. You can pass a `+` to
-add a polynomial or `*` to multiply. End the session with a period `.`.
+add a polynomial or `*` to multiply. Terminate the input with a period `.`.
 
 **Input:**
 
@@ -75,12 +75,12 @@ libraries.
 scratch, I wanted to be absolutely sure they actually worked. To test it
 thoroughly, I put together a custom automated setup:
 
-    The Generator (generate_tests.py): A Python script that brute-forces valid
-    polynomial inputs based on the project's grammar rules. It can spin up a
-    stress-test suite of 2,000 cases (though I've only committed a small sample
-    here to keep the repo clean).
+    * The Generator (generate_tests.py): A Python script that brute-forces
+    valid polynomial inputs based on the project's grammar rules. It can spin
+    up a stress-test suite of 2,000 cases (though I've only committed a small
+    sample here to keep the repo clean).
 
-    The Runner (test.sh): A Bash script that feeds the generated inputs into
+    * The Runner (test.sh): A Bash script that feeds the generated inputs into
     the compiled binary, compares the results against expected outputs using
     diff, and checks for memory leaks using Valgrind.
 
@@ -98,6 +98,6 @@ This project was originally developed for the **Wstęp do Programowania (WDP)**
 (Introductory Programming) course at MIMUW (Faculty of Mathematics, Informatics
 and Mechanics of the University of Warsaw).
 
-* Course Code: [1000-211bWPI](https://usosweb.mimuw.edu.pl/kontroler.php?_action=katalog2/przedmioty/pokazPrzedmiot&prz_kod=1000-211bWPI)
+* Course Code: [1000-211bWPI](https://usosweb.mimuw.edu.pl/kontroler.php?_action=katalog2%2Fprzedmioty%2FpokazPrzedmiot&prz_kod=1000-211bWPI&lang=en)
 
 The source code in this repository is my own work and is licensed under the [MIT License](./LICENSE).
