@@ -1,27 +1,28 @@
 /*
- * Ten program jest implementacją kalkulatora przeprowadzającego działania na wielomianach.
- * Przyjmuje serię wielomianów poprzedzonych znakiem +, lub *.
+ * This program is an implementation of a calculator that performs operations on polynomials.
+ * It accepts a series of polynomials, each preceded by a '+' or '*' character
  *
+ * Example input:
  * +2x^4+1
  * +4x^5-6x^4-x^2+2
  * *-x+15
  * .
  *
- * Na wyjściu wypisana zostaje seria wielomianów, będąca reprezentacją stanu akumulatora - zmiennej przechowującej
- * wielomian między operacjami.
+ * The output is a series of polynomials, which represent the state of 
+ * the accumulator - the variable storing the polynomial between operations.
  *
- * Autor: Ignacy Pękała
+ * Author: Ignacy Pękała
  *
-*/
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
 
-// Stałe
+// Constants
 #define MAX_DEG 10
 #define EOI '.'
 
-// Struktury i typy
+// Structures and types
 typedef enum {
     addition = '+',
     multiplication = '*',
@@ -35,17 +36,17 @@ typedef struct {
 
 typedef struct {
     // An array of monomials ordered ascendingly by their degree.
-    // Index 0 represents the monomial of exponent 0.
+    // Index 0 represents the monomial with an exponent of 0.
     int coefficients[MAX_DEG + 1];
     int degree;
 } Polynomial;
 
-// Zmienne globalne
-char character; // Przechowuje ostatni wczytany znak, jest uakutalniana przy każdym użyciu getchar()
+// Global variables
+char character; // Stores the last read character, updated every time getchar() is called
 Polynomial accumulator;
 
-// Funkcje
-// Inicjalizacja wielomianu - wypełnia wszystkie pola zerami
+// Functions
+// Polynomial initialization - fills all fields with zeros
 void init_polynomial(Polynomial *polynomial) {
     polynomial->degree = 0;
     for (int i = 0; i <= MAX_DEG; i++) {
@@ -55,7 +56,7 @@ void init_polynomial(Polynomial *polynomial) {
 
 int max(int a, int b) { return (a > b) ? a : b; }
 
-// Oblicza i nadpisuje stopień zadanego wielomianu
+// Calculates and overwrites the degree of the given polynomial
 void recalculate_degree(Polynomial *polynomial) {
     int degree = -1;
     for (int exponent = 0; exponent <= MAX_DEG; exponent++) {
@@ -66,13 +67,13 @@ void recalculate_degree(Polynomial *polynomial) {
     polynomial->degree = degree;
 }
 
-// Wypisuje zadany wielomian
+// Prints the given polynomial
 void print_polynomial(Polynomial *polynomial) {
     int printed = 0;
     for (int exponent = polynomial->degree; exponent >= 0; exponent--) {
         int coefficient = polynomial->coefficients[exponent];
         if (coefficient != 0) {
-            // <znak>
+            // <sign>
             Operation operation = (coefficient >= 0) ? addition : subtraction;
             if (printed == 0) {
                 if (operation == subtraction) {
@@ -81,7 +82,7 @@ void print_polynomial(Polynomial *polynomial) {
             } else {
                 printf(" %c ", operation);
             }
-            // <wspolczynnik>x^<stopien>
+            // <coefficient>x^<degree>
             if (exponent > 0) {
                 if (abs(coefficient) != 1) printf("%d", abs(coefficient));
                 putchar('x');
@@ -92,7 +93,7 @@ void print_polynomial(Polynomial *polynomial) {
             printed++;
         }
     }
-    // Jeżeli nie wypisaliśmy żadnych jednomianów, wypisujemy 0
+    // If no monomials were printed, print 0
     if (printed == 0) {
         putchar('0');
     }
@@ -100,14 +101,14 @@ void print_polynomial(Polynomial *polynomial) {
     putchar('\n');
 }
 
-// Wczytuje pojedyńczy znak z wejścia, zapisuje go i zwraca
+// Reads a single character from input, saves it, and returns it
 char read_char() {
     character = (char) getchar();
     return character;
 }
 
-// Czyta kolejne znaki z wejścia, dopóki mają one określoną wartość
-// Zwraca liczbę wczytanych znaków
+// Reads successive characters from input as long as they match a specific value
+// Returns the number of read characters
 int skip(char symbol) {
     int count = 0;
     while (character == symbol) {
@@ -117,21 +118,21 @@ int skip(char symbol) {
     return count;
 }
 
-// Wczytuje znak z wejścia, zwraca +1 jeśli był to "+" i -1 dla "-"
+// Reads a character from input, returns +1 if it was "+" and -1 for "-"
 int load_sign() {
     skip(' ');
     int result = 1;
     if (character == subtraction) {
         result = -1;
     }
-    // Jeśli był znak, wczytaj następny
+    // If there was a sign, read the next character
     if (character == subtraction || character == addition) {
         read_char();
     }
     return result;
 }
 
-// Wczytuje liczbę bez znaku, jeśli nie znajdzie żadnej liczby, zwraca podaną wartość.
+// Reads an unsigned number, if no number is found, returns the provided default value.
 int load_number(int default_value) {
     skip(' ');
     int number = 0, characters = 0;
@@ -145,7 +146,7 @@ int load_number(int default_value) {
     return number;
 }
 
-// Wczytuje jednomian
+// Reads a monomial
 Monomial load_monomial() {
     Monomial monomial;
     int sign = load_sign();
@@ -168,15 +169,15 @@ Monomial load_monomial() {
     return monomial;
 }
 
-// Dodaje jednomian do podanego wielomianu (nadpisuje wielomian)
+// Adds a monomial to the given polynomial (overwrites the polynomial)
 void add_monomial(Polynomial *polynomial, const Monomial *monomial) {
     polynomial->coefficients[monomial->exponent] += monomial->coefficient;
     recalculate_degree(polynomial);
 }
 
 
-// Mnoży wielomian przez jednomian (bez nadpisywania)
-// zwraca wynik mnożenia
+// Multiplies a polynomial by a monomial (without overwriting)
+// returns the result of the multiplication
 Polynomial multiply_by_monomial(const Polynomial *polynomial, const Monomial *monomial) {
     Polynomial result;
     init_polynomial(&result);
@@ -191,7 +192,7 @@ Polynomial multiply_by_monomial(const Polynomial *polynomial, const Monomial *mo
     return result;
 }
 
-// Główna logika programu
+// Main program logic
 int main(void) {
     init_polynomial(&accumulator);
     read_char();
@@ -202,21 +203,25 @@ int main(void) {
         skip(character);
         skip(' ');
 
-        // Zmienna przechowująca wielomian będący wynikiem mnożenia bez utraty początkowej wartości akumulatora
+        // Variable storing the polynomial resulting from multiplication without
+        // losing the initial value of the accumulator
         Polynomial multi_accumulator;
         init_polynomial(&multi_accumulator);
 
-        // Wczytywanie kolejnych jednomianów (i adekwatne działania)
+        // Reading subsequent monomials (and performing the adequate operations)
         while (character != '\n') {
             Monomial input_monomial = load_monomial();
             if (operation == addition) {
                 add_monomial(&accumulator, &input_monomial);
             } else /* operation == multiplication */ {
                 /*
-                 * Tutaj zapisujemy wynik mnożenia w zmiennej,
-                 * żeby jednomian po jednomianie dodać go do multi_accumulator
+                 * Store the multiplication result in a temporary variable
+                 * to add it to multi_accumulator monomial by monomial.
                  */
-                Polynomial polynomial = multiply_by_monomial(&accumulator, &input_monomial);
+                Polynomial polynomial = multiply_by_monomial(
+                    &accumulator,
+                    &input_monomial
+                );
                 for (int i = 0; i <= polynomial.degree; i++) {
                     Monomial multi_monomial = {
                         polynomial.coefficients[i],
