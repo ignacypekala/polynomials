@@ -92,14 +92,6 @@ thoroughly, I put together a custom automated setup:
     the compiled binary, compares the results against expected outputs using
     diff, and checks for memory leaks using Valgrind.
 
-## What I Learned
-
-Since building this, I've moved on to much more advanced programming topics,
-but this project served as a great stepping stone. Specifically, it helped me:
-
-* Grasp the foundational structure and flow of a C program.
-* Get my first real hands-on experience handling and passing pointers to objects allocated on the stack.
-
 ## Acknowledgments & License
 
 This project was originally developed for the **Wstęp do Programowania (WDP)**
