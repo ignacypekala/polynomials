@@ -54,6 +54,14 @@ add a polynomial or `*` to multiply. Terminate the input with a period `.`.
 .
 ```
 
+**Output:**
+
+```text
+2x^4 + 1
+4x^5 - 4x^4 - x^2 + 3
+-4x^6 + 64x^5 - 60x^4 + x^3 - 15x^2 - 3x + 45
+```
+
 ## Technical Highlights
 
 While it's a relatively simple application, it enforces some good foundational
@@ -75,12 +83,12 @@ libraries.
 scratch, I wanted to be absolutely sure they actually worked. To test it
 thoroughly, I put together a custom automated setup:
 
-    * The Generator (generate_tests.py): A Python script that brute-forces
+    * [generate_tests.py](./generate_tests.py): A Python script that brute-forces
     valid polynomial inputs based on the project's grammar rules. It can spin
     up a stress-test suite of 2,000 cases (though I've only committed a small
     sample here to keep the repo clean).
 
-    * The Runner (test.sh): A Bash script that feeds the generated inputs into
+    * [test.sh](./test.sh): A Bash script that feeds the generated inputs into
     the compiled binary, compares the results against expected outputs using
     diff, and checks for memory leaks using Valgrind.
 
