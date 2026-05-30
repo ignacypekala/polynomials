@@ -12,12 +12,10 @@ my feet wet with C programming.
 
 ## How to Run
 
-Clone the repository and use the provided `Makefile` to compile the project.
+Build the project:
 
-```bash
-git clone https://github.com/ignacypekala/polynomials.git 
-cd polynomials 
-make
+```
+make polynomials
 ```
 
 Run the program:
