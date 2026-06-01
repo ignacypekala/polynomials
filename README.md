@@ -1,6 +1,6 @@
 # Polynomial Calculator
 
-A simple, neat command-line calculator for polynomials, written in C. It takes
+A simple command-line calculator for polynomials, written in C. It takes
 a series of string inputs representing polynomials and performs standard
 addition and multiplication operations, keeping a running track of the results
 in an accumulator.
