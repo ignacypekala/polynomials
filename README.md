@@ -4,8 +4,10 @@ A command-line calculator for polynomials written in C. It parses string inputs
 representing mathematical operations on polynomials, calculating sums and
 products, and maintains a running track of the results in an accumulator.
 
-This was a foundational project built to practice memory-safe C programming and
-manual string parsing under strict environmental constraints.
+This was a straightforward project I built a while ago when I was first getting
+my feet wet with C programming. It served as a foundational exercise in
+memory-safe programming and manual string parsing under strict environmental
+constraints.
 
 ## Building and Execution
 
@@ -13,10 +15,10 @@ Run the program:
 
 ```
 make polynomials
-./polynomials < 
+./polynomials < input.txt
 ```
 
-Run the test suite (with valgrind):
+Run the test suite:
 
 ```bash
 # Run the test suite (fast)
@@ -50,41 +52,40 @@ add a polynomial or `*` to multiply. Terminate the input with a period `.`.
 
 ## Engineering Highlights
 
-Instead of building an overly abstracted application, I designed this solution
-to specifically navigate the rigid constraints set by the assignment:
+Instead of over-engineering the application, I kept the solution simple to
+specifically navigate the rigid constraints set by the assignment:
 
 * **Domain-Restricted Memory:** 
 
-    The assignment strictly capped input lines at
-    1,000 characters and polynomial degrees at a maximum of 10. Given these hard
-    bounds, I intentionally avoided dynamic allocation (`malloc`/`free`). The
-    program relies safely on stack memory, keeping it lightweight and ensuring
-    compliance with the strict `-Wvla` compiler flag that rejects variable-length
-    arrays.
-
+    The assignment strictly capped input lines at 1,000 characters and
+    polynomial degrees at a maximum of 10. Given these hard bounds, I
+    intentionally avoided dynamic allocation (malloc/free). The program relies
+    entirely on stack memory, keeping it lightweight and ensuring compliance
+    with the strict -Wvla compiler flag.
 
 * **Zero-Dependency Parsing:** 
 
-    I implemented a custom string parser to read and
-    evaluate the polynomial expressions according to the assignment's strict
-    extended BNF grammar, without relying on external libraries.
+    I implemented a custom string parser to read and evaluate the polynomial
+    expressions according to the assignment's strict extended BNF grammar,
+    without relying on external libraries. The BNF grammar:
+
+    ```
+    <polynomial> ::= "0" | [ "-" ] <monomial> { <operation> <monomial> }
+    <operation> ::= "+" | "-"
+    <monomial> ::= "1" | <number> | [ <number> ] "x" [ "^" <number> ]
+    <number> ::= "1" <digit> { <digit> } | <digit from 2 to 9> { <digit> }
+    <digit> ::= "0" | "1" | <digit from 2 to 9>
+    <digit from 2 to 9> ::= "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+    ```
 
 
 * **Strict Compilation Rules:** 
 
-    The project was compiled under C23 with a
-    rigorous suite of GCC flags, including `-Wall`, `-Wextra`, `-pedantic`, and
-    `-Werror`. To guarantee clean, undefined-behavior-free code, it also had to
-    pass through various sanitizers and strict stack protection.
-
-
-* 
-**Absolute Memory Safety:** The executable was required to run under Valgrind
-configured with `--leak-check=full` and `--error-exitcode=1` , meaning any
-memory leak or error would immediately fail the program execution.
-
-
-
+    The project was compiled under C23 with a heavy suite of GCC flags (`-Wall`,
+    `-Wextra`, `-pedantic`, and `-Werror`). To guarantee clean execution, it was
+    required to run flawlessly under Valgrind configured with `--leak-check=full`.
+    
+    
 ## Testing Infrastructure & Community Adoption
 
 Since I wrote the parsing and math logic from scratch, I built a custom
