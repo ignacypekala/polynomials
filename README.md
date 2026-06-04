@@ -9,6 +9,8 @@ my feet wet with C programming. It served as a foundational exercise in
 memory-safe programming and manual string parsing under strict environmental
 constraints.
 
+[usage showcase](./assets/polynomials.gif)
+
 ## Building and Execution
 
 Run the program:
