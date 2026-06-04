@@ -24,6 +24,8 @@ For running the test suite:
 * Valgrind (required for the memory-check suite)
 * Python 3 (optional, to run the test generator)
 
+### Instructions
+
 Run the program:
 
 ```bash
