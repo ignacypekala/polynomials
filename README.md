@@ -13,7 +13,7 @@ constraints.
 
 Run the program:
 
-```
+```bash
 make polynomials
 ./polynomials < input.txt
 ```
