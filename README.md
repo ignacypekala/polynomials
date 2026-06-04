@@ -1,42 +1,30 @@
 # Polynomial Calculator
 
-A simple command-line calculator for polynomials, written in C. It takes
-a series of string inputs representing polynomials and performs standard
-addition and multiplication operations, keeping a running track of the results
-in an accumulator.
+A command-line calculator for polynomials written in C. It parses string inputs
+representing mathematical operations on polynomials, calculating sums and
+products, and maintains a running track of the results in an accumulator.
 
-This was a straightforward project I built a while ago when I was first getting
-my feet wet with C programming.
+This was a foundational project built to practice memory-safe C programming and
+manual string parsing under strict environmental constraints.
 
-![preview](./assets/polynomials.gif)
-
-## How to Run
-
-Build the project:
-
-```
-make polynomials
-```
+## Building and Execution
 
 Run the program:
 
-```bash
-./polynomials
+```
+make polynomials
+./polynomials < 
 ```
 
 Run the test suite (with valgrind):
 
 ```bash
+# Run the test suite (fast)
+./test.sh off
+
+# Run the test suite with memory checks (slower)
 ./test.sh
 ```
-> Note: Running the tests with valgrind will make it much slower.
-
-Or without valgrind:
-
-```bash
-./test.sh off
-```
-
 
 ### Usage Example
 
@@ -60,35 +48,70 @@ add a polynomial or `*` to multiply. Terminate the input with a period `.`.
 -4x^6 + 64x^5 - 60x^4 + x^3 - 15x^2 - 3x + 45
 ```
 
-## Technical Highlights
+## Engineering Highlights
 
-While it's a relatively simple application, it enforces some good foundational
-practices:
+Instead of building an overly abstracted application, I designed this solution
+to specifically navigate the rigid constraints set by the assignment:
 
-* **Strict C Standards:** Compiled under C23 with a heavy suite of GCC flags
-(`-Wall`, `-Wextra`, `-pedantic`, `-Werror`, and various sanitizers) to ensure
-clean, undefined-behavior-free code.
+* **Domain-Restricted Memory:** 
 
-* **Stack-Only Memory:** The program relies entirely on stack memory for
-polynomial structures and pointers, intentionally avoiding dynamic allocation
-(`malloc`/`free`) to keep things lightweight and leak-proof.
+    The assignment strictly capped input lines at
+    1,000 characters and polynomial degrees at a maximum of 10. Given these hard
+    bounds, I intentionally avoided dynamic allocation (`malloc`/`free`). The
+    program relies safely on stack memory, keeping it lightweight and ensuring
+    compliance with the strict `-Wvla` compiler flag that rejects variable-length
+    arrays.
 
-* **Custom Parsing:** Implements a manual string parser to read and evaluate
-the mathematical expressions without relying on external regex or parsing
-libraries.
 
-* **Custom Automated Testing**: Since I wrote the parser and math logic from
-scratch, I wanted to be absolutely sure they actually worked. To test it
-thoroughly, I put together a custom automated setup:
+* **Zero-Dependency Parsing:** 
 
-    * [generate_tests.py](./generate_tests.py): A Python script that brute-forces
-    valid polynomial inputs based on the project's grammar rules. It can spin
-    up a stress-test suite of 2,000 cases (though I've only committed a small
-    sample here to keep the repo clean).
+    I implemented a custom string parser to read and
+    evaluate the polynomial expressions according to the assignment's strict
+    extended BNF grammar, without relying on external libraries.
 
-    * [test.sh](./test.sh): A Bash script that feeds the generated inputs into
-    the compiled binary, compares the results against expected outputs using
-    diff, and checks for memory leaks using Valgrind.
+
+* **Strict Compilation Rules:** 
+
+    The project was compiled under C23 with a
+    rigorous suite of GCC flags, including `-Wall`, `-Wextra`, `-pedantic`, and
+    `-Werror`. To guarantee clean, undefined-behavior-free code, it also had to
+    pass through various sanitizers and strict stack protection.
+
+
+* 
+**Absolute Memory Safety:** The executable was required to run under Valgrind
+configured with `--leak-check=full` and `--error-exitcode=1` , meaning any
+memory leak or error would immediately fail the program execution.
+
+
+
+## Testing Infrastructure & Community Adoption
+
+Since I wrote the parsing and math logic from scratch, I built a custom
+automated setup to verify it:
+
+* **Brute-Force Generator:** 
+
+    I wrote a Python script [generate_tests.py](./generate_tests.py) that
+    algorithmically generates valid polynomial inputs based on the project's
+    grammar rules, allowing me to spin up a stress-test suite of 2,000 edge cases.
+
+* **Peer Validation:** 
+
+    I exported these test cases using the class-standard `.in`
+    and `.out` file structure. Because it followed this standardized format, I
+    shared the massive test suite with my peers, who were able to seamlessly plug
+    the cases into their own custom test scripts to cross-validate their
+    independent implementations.
+
+* **Tooling Setup:** 
+
+    During development, I personally relied on
+    [toster](https://github.com/MikolajKolek/toster) (a popular competetive
+    programming testing tool) for rapid validation. Before publishing, I wrote
+    a lightweight bash wrapper script [test.sh](./test.sh) to allow for
+    seamless local execution and validation of the entire suite without needing
+    external dependencies.
 
 ## Acknowledgments & License
 
