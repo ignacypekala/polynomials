@@ -55,7 +55,7 @@ add a polynomial or `*` to multiply. Terminate the input with a period `.`.
 Instead of over-engineering the application, I kept the solution simple to
 specifically navigate the rigid constraints set by the assignment:
 
-* **Domain-Restricted Memory:** 
+* **Domain-Restricted Memory** 
 
     The assignment strictly capped input lines at 1,000 characters and
     polynomial degrees at a maximum of 10. Given these hard bounds, I
@@ -63,7 +63,7 @@ specifically navigate the rigid constraints set by the assignment:
     entirely on stack memory, keeping it lightweight and ensuring compliance
     with the strict -Wvla compiler flag.
 
-* **Zero-Dependency Parsing:** 
+* **Zero-Dependency Parsing** 
 
     I implemented a custom string parser to read and evaluate the polynomial
     expressions according to the assignment's strict extended BNF grammar,
@@ -79,7 +79,7 @@ specifically navigate the rigid constraints set by the assignment:
     ```
 
 
-* **Strict Compilation Rules:** 
+* **Strict Compilation Rules** 
 
     The project was compiled under C23 with a heavy suite of GCC flags (`-Wall`,
     `-Wextra`, `-pedantic`, and `-Werror`). To guarantee clean execution, it was
@@ -91,13 +91,13 @@ specifically navigate the rigid constraints set by the assignment:
 Since I wrote the parsing and math logic from scratch, I built a custom
 automated setup to verify it:
 
-* **Brute-Force Generator:** 
+* **Brute-Force Generator** 
 
     I wrote a Python script [generate_tests.py](./generate_tests.py) that
     algorithmically generates valid polynomial inputs based on the project's
     grammar rules, allowing me to spin up a stress-test suite of 2,000 edge cases.
 
-* **Peer Validation:** 
+* **Peer Validation** 
 
     I exported these test cases using the class-standard `.in`
     and `.out` file structure. Because it followed this standardized format, I
@@ -105,7 +105,7 @@ automated setup to verify it:
     the cases into their own custom test scripts to cross-validate their
     independent implementations.
 
-* **Tooling Setup:** 
+* **Tooling Setup** 
 
     During development, I personally relied on
     [toster](https://github.com/MikolajKolek/toster) (a popular competetive
