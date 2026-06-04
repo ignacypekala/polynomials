@@ -13,6 +13,17 @@ constraints.
 
 ## Building and Execution
 
+### Prerequisites
+
+* GCC (with C23 support)
+* Make
+
+For running the test suite:
+
+* Linux/Unix environment (bash, diff)
+* Valgrind (required for the memory-check suite)
+* Python 3 (optional, to run the test generator)
+
 Run the program:
 
 ```bash
